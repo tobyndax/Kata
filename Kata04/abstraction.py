@@ -3,6 +3,12 @@
 import sys
 import re
 
+small = ""
+line = "nonempty"
+smallSize = float("inf")
+
+#-------------------------------------------------------------------------------
+
 def is_number(s):
     try:
         float(s)
@@ -10,14 +16,15 @@ def is_number(s):
     except ValueError:
         return False
 
+#-------------------------------------------------------------------------------
+
 def difference(a,b,c,file):
     
     file = open(file,"r")
-    small = ""
-    line = "nonempty"
-    smallSize = float("inf")
-
-
+    
+    global small
+    global smallSize
+    
     for line in file.readlines():
         data = line.split()
         if(len(data) > b):
@@ -28,30 +35,24 @@ def difference(a,b,c,file):
             if(currentSize < smallSize):
                 smallSize = currentSize
                 small = data[c]
-    if(a == 6):
-        print("The least difference team was " + small)
-        print("And the difference was %.0f") %smallSize
-        return
-    else:
-        print("The day was " + small)
-        print("And the difference was %.0f") %smallSize
-        return
         
-def football():
-    print "running football"
-    difference(6,8,1,"football.dat")
     return
-def weather():
-    print "running weather"
-    difference(1,2,0,"weather.dat")
-    return
+    
+#-------------------------------------------------------------------------------
 
 if (len(sys.argv) != 2):
-    print "The program takes one argument. 0 for football and 1 for weather\n they will look for respective .dat file for data"
+    print "The program takes one argument. 0 for football and 1 for weather"
+    print "n they will look for respective .dat file for data"
+    
 if (str(sys.argv[1]) == '0'):
-    football()
+    difference(6,8,1,"football.dat")
+    print("The least difference team was " + small)
+    print("And the difference was %.0f") %smallSize
+
 if (str(sys.argv[1]) == '1'):
-    weather()
+    difference(1,2,0,"weather.dat")
+    print("The day was " + small)
+    print("And the difference was %.0f") %smallSize
     
     
     
