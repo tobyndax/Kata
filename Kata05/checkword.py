@@ -1,43 +1,40 @@
+#!/usr/bin/python
+
 import json
 import time
 import hashlib
+from bitstring import Bits, BitArray, BitStream
 
 start = time.clock()
 
 modValue = 1000000
-
-with open('data.txt', 'r') as infile:
-	hashTable = json.load(infile)
+with open('data', 'r') as infile:
+	hashTable = Bits(infile)
 
 infile.close()	
-end = time.clock()
 
-print(end-start)
+wordcount = 0
+errors = 0
 
 testfile = open("test.txt","r")
 
-test = "knew"
+for line in testfile.readlines():
+    data = line.split()
+    for line in data:
+        hash = hashlib.md5(line.lower().encode('utf-8')).digest()
+        h1 = int(hash[0:3].encode("hex"),16)%modValue
+        h2 = int(hash[4:7].encode("hex"),16)%modValue
+        h3 = int(hash[8:11].encode("hex"),16)%modValue
+        h4 = int(hash[12:15].encode("hex"),16)%modValue
+        if(hashTable[h1] and hashTable[h2] and hashTable[h3] and hashTable[h4]):
+            wordcount +=1
+        else:
+            wordcount +=1
+            errors += 1
+            print "%s was spelled incorrectly"%line
 
-item = test
-hash = hashlib.md5(item.encode('utf-8')).digest()
-h1 = int.from_bytes(hash[0:3],byteorder='big')%modValue
-h2 = int.from_bytes(hash[4:7],byteorder='big')%modValue
-h3 = int.from_bytes(hash[8:11],byteorder='big')%modValue
-print("%s %s %s"%(hashTable[h1], hashTable[h2], hashTable[h3]))
-if(hashTable[h1] and hashTable[h2] and hashTable[h3]):
-	print("Yay, maybe nay")
-else:
-	print("okay...")
-
-# for line in testfile.readlines():
-	# data = line.split()
-	# for item in data:
-		# hash = hashlib.md5(item.encode('utf-8')).digest()
-		# h1 = int.from_bytes(hash[0:3],byteorder='big')%modValue
-		# h2 = int.from_bytes(hash[4:7],byteorder='big')%modValue
-		# h3 = int.from_bytes(hash[8:11],byteorder='big')%modValue
-		# if(hashTable[h1] and hashTable[h2] and hashTable[h3]):
-			# print()
-			#print("The word %s is correct" %item)
-		# else: 
-			# print("The word %s is incorrect" %item)
+end = time.clock()
+print(end-start)
+print("There were %s number of incorrect words reported"%errors)
+print("that means atleast %s false positive"%(16-errors))
+print("There were a total of %s words checked"%wordcount)
