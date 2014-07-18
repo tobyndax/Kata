@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from collections import Counter
 import json
+import time
 
 def isAnagram2(str1,str2):
     if(str1 == str2):
@@ -25,10 +26,13 @@ lengths = json.load(f)
 
 #---------------------------------------------------
 # Preloaded parameters done.
-
+ana = 0
 def checkAnagram(str1):
     for item in wordList[lengths[len(str1)-1]:lengths[len(str1)]]:
         if(isAnagram2(str1.lower(),item.strip())):
-            print item
+            global ana
+            ana +=1
+            #print "%s is an anagram for %s"%(item,str1)
+    return
         
-checkAnagram("Arrest")
+checkAnagram('wordlister')
