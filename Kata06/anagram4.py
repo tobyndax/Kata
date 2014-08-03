@@ -15,4 +15,3 @@ for word in wordlist:
 sortedSets = [sorted(x) for x in d.values() if len(x) > 2]
 for wordset in sorted(sortedSets):
     print(' '.join(wordset))
-
