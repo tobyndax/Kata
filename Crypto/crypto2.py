@@ -34,7 +34,7 @@ def getShift():
         try:
             shift = int(getInput("Please specify a shift (integer) for the ceasar chipher:"))
             return shift
-        except TypeError:
+        except(TypeError,ValueError):
             print "Value must be of integer type"
             pass
     raise TypeError("Non Integer Value from user.")
@@ -51,7 +51,6 @@ def buildShiftDict(shift):
 def ceasar(path,shift = 0):
     #shift = 3
     if(shift == 0):
-        print "Yes!!"
         shift = getShift()
     dataOut=""
     inData = getData(path)
@@ -75,15 +74,18 @@ def getLibrary():
       return pickle.load(infile)  
 
 def printMethods():
+    print("#-------------------")
     print "Available methods are:"
     for key, value in getLibrary().iteritems():
         print key
+    print ("#-------------------")
          
 def getMethod(method):
     try:
         outMethod = getLibrary()[method]
         return outMethod
     except KeyError:
+        print "%s is not a valid method"%method
         printMethods()
         raise
         
@@ -100,6 +102,8 @@ def main():
     
     newfilename = method+path
     saveData(newData,newfilename)
+    
+    
 if __name__ == '__main__':    
     main()
     
